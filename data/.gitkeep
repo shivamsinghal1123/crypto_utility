@@ -1,0 +1,8 @@
+# Crypto Analyzer - Data Directory
+
+This directory stores:
+- SQLite database (crypto_analysis.db)
+- Generated reports (reports/)
+- Cached data
+
+Auto-created by the application.
