@@ -65,6 +65,9 @@ class ReportGenerator:
                 'data_freshness': self._assess_data_freshness(analysis_data),
                 'confidence_score': self._calculate_overall_confidence(analysis_data)
             },
+            'market_data': self._format_market_data(
+                analysis_data.get('current_price_data', {})
+            ),
             'fundamental_analysis': self._format_fundamental_analysis(
                 analysis_data.get('fundamental_analysis', {})
             ),
@@ -124,6 +127,23 @@ class ReportGenerator:
             scores.append(0.7)
         
         return round(sum(scores) / len(scores) if scores else 0.5, 2)
+    
+    def _format_market_data(self, price_data: Dict) -> Dict:
+        """Format current market data for report."""
+        if not price_data:
+            return {}
+        
+        return {
+            'current_price': price_data.get('price', 0),
+            'price_change_24h': price_data.get('price_change', 0),
+            'price_change_percent_24h': price_data.get('price_change_percent', 0),
+            'high_24h': price_data.get('high_24h', 0),
+            'low_24h': price_data.get('low_24h', 0),
+            'volume_24h': price_data.get('volume_24h', 0),
+            'quote_volume_24h': price_data.get('quote_volume_24h', 0),
+            'trades_24h': price_data.get('trades_24h', 0),
+            'timestamp': price_data.get('timestamp')
+        }
     
     def _format_fundamental_analysis(self, fundamental_data: Dict) -> Dict:
         """Format fundamental analysis for report."""
@@ -324,6 +344,18 @@ class ReportGenerator:
         lines.append("=" * 80)
         lines.append("")
         
+        # Market Data Section
+        lines.append("MARKET DATA (SNAPSHOT)")
+        lines.append("-" * 80)
+        market = report.get('market_data', {})
+        if market:
+            lines.append(f"Current Price: ${format_number(market.get('current_price', 0), 2)}")
+            lines.append(f"24h High: ${format_number(market.get('high_24h', 0), 2)}")
+            lines.append(f"24h Low: ${format_number(market.get('low_24h', 0), 2)}")
+            lines.append(f"24h Change: {format_percentage(market.get('price_change_percent_24h', 0))}")
+            lines.append(f"24h Volume: {format_large_number(market.get('volume_24h', 0))}")
+        lines.append("")
+        
         # Fundamental Analysis
         lines.append("FUNDAMENTAL ANALYSIS")
         lines.append("-" * 80)
@@ -342,24 +374,115 @@ class ReportGenerator:
         lines.append(f"Volatility: {tech.get('volatility_assessment', 'N/A').upper()}")
         lines.append("")
         
-        # Predictions
-        lines.append("PREDICTIONS (24H)")
+        # Support and Resistance Levels
+        lines.append("KEY TRADING LEVELS (NEXT 24H)")
         lines.append("-" * 80)
         pred = report.get('predictions', {})
+        
+        # Support Levels
+        support_levels = pred.get('next_24h_support_levels', [])
+        lines.append("Support Levels:")
+        for i, level in enumerate(support_levels[:3], 1):
+            level_price = level.get('level', 0)
+            strength = level.get('strength', 0)
+            distance = level.get('distance_percent', 0)
+            lines.append(f"  Support {i}: ${format_number(level_price, 2)} (Strength: {strength:.1f}, Distance: {format_percentage(distance)})")
+        
+        lines.append("")
+        
+        # Resistance Levels
+        resistance_levels = pred.get('next_24h_resistance_levels', [])
+        lines.append("Resistance Levels:")
+        for i, level in enumerate(resistance_levels[:3], 1):
+            level_price = level.get('level', 0)
+            strength = level.get('strength', 0)
+            distance = level.get('distance_percent', 0)
+            lines.append(f"  Resistance {i}: ${format_number(level_price, 2)} (Strength: {strength:.1f}, Distance: {format_percentage(distance)})")
+        
+        lines.append("")
+        
+        # Predictions
+        lines.append("PRICE PREDICTIONS (24H)")
+        lines.append("-" * 80)
         lines.append(f"Probability Up: {format_percentage(pred.get('probability_up', 0) * 100)}")
         lines.append(f"Probability Down: {format_percentage(pred.get('probability_down', 0) * 100)}")
+        
+        # Calculate expected trading range
+        forecast = pred.get('price_forecast', {})
+        current_price = market.get('current_price', 0) if market else forecast.get('current_price', 0)
+        expected_volatility = pred.get('expected_volatility', 0)
+        
+        if current_price > 0:
+            # Calculate range based on volatility and support/resistance
+            lower_bound = support_levels[0].get('level', 0) if support_levels else current_price * (1 - expected_volatility/100)
+            upper_bound = resistance_levels[0].get('level', 0) if resistance_levels else current_price * (1 + expected_volatility/100)
+            
+            lines.append(f"Expected Trading Range: ${format_number(lower_bound, 2)} - ${format_number(upper_bound, 2)}")
+            lines.append(f"Expected Volatility: {format_percentage(expected_volatility)}")
+        
         lines.append("")
         
         # Recommendations
-        lines.append("RECOMMENDATIONS")
+        lines.append("RECOMMENDATIONS & TRADING STRATEGY")
         lines.append("-" * 80)
         rec = report.get('recommendations', {})
-        lines.append(f"Suggestion: {rec.get('mock_trading_suggestion', 'N/A')}")
+        
+        lines.append(f"Trading Suggestion: {rec.get('mock_trading_suggestion', 'N/A')}")
         lines.append(f"Position Size: {rec.get('position_sizing', 'N/A').upper()}")
-        if rec.get('stop_loss_suggestion'):
-            lines.append(f"Stop Loss: {rec['stop_loss_suggestion']}")
+        lines.append(f"Confidence Level: {format_percentage(rec.get('confidence', 0) * 100)}")
         lines.append("")
         
+        # Entry and Exit Strategy
+        lines.append("Entry & Exit Strategy:")
+        if rec.get('stop_loss_suggestion'):
+            lines.append(f"  Stop Loss: ${format_number(rec['stop_loss_suggestion'], 2)}")
+        
+        take_profit = rec.get('take_profit_levels', [])
+        if take_profit:
+            lines.append(f"  Take Profit Targets:")
+            for i, tp in enumerate(take_profit[:3], 1):
+                lines.append(f"    Target {i}: ${format_number(tp, 2)}")
+        
+        lines.append("")
+        
+        # Risk Analysis
+        risk = report.get('risk_assessment', {})
+        lines.append("Risk Assessment:")
+        lines.append(f"  Overall Risk: {risk.get('overall_risk', 'N/A').upper()}")
+        lines.append(f"  Volatility Risk: {risk.get('volatility_risk', 'N/A').upper()}")
+        lines.append(f"  Liquidity Risk: {risk.get('liquidity_risk', 'N/A').upper()}")
+        
+        risk_factors = risk.get('risk_factors', [])
+        if risk_factors:
+            lines.append(f"  Key Risk Factors: {', '.join(risk_factors)}")
+        
+        lines.append("")
+        
+        # Trading Range Analysis
+        lines.append("24-Hour Trading Range Analysis:")
+        if support_levels and resistance_levels and current_price > 0:
+            immediate_support = support_levels[0].get('level', 0)
+            immediate_resistance = resistance_levels[0].get('level', 0)
+            
+            # Calculate potential movement percentages
+            downside_potential = ((immediate_support - current_price) / current_price) * 100 if immediate_support else 0
+            upside_potential = ((immediate_resistance - current_price) / current_price) * 100 if immediate_resistance else 0
+            
+            lines.append(f"  Current Price: ${format_number(current_price, 2)}")
+            lines.append(f"  Immediate Support: ${format_number(immediate_support, 2)} ({format_percentage(downside_potential)} downside)")
+            lines.append(f"  Immediate Resistance: ${format_number(immediate_resistance, 2)} ({format_percentage(upside_potential)} upside)")
+            lines.append(f"  Trading Range Width: ${format_number(immediate_resistance - immediate_support, 2)} ({format_percentage(((immediate_resistance - immediate_support) / current_price) * 100)})")
+            
+            # Trend-based recommendation
+            trend_direction = tech.get('trend_direction', 'neutral').lower()
+            if trend_direction == 'bullish':
+                lines.append(f"  Recommendation: Look for entries near ${format_number(immediate_support, 2)}, target ${format_number(immediate_resistance, 2)}")
+            elif trend_direction == 'bearish':
+                lines.append(f"  Recommendation: Consider short positions near ${format_number(immediate_resistance, 2)}, target ${format_number(immediate_support, 2)}")
+            else:
+                lines.append(f"  Recommendation: Range-bound trading between ${format_number(immediate_support, 2)} and ${format_number(immediate_resistance, 2)}")
+        
+        lines.append("")
         lines.append("=" * 80)
         
         return "\n".join(lines)
