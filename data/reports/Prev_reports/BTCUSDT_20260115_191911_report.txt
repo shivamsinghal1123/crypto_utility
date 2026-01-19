@@ -1,0 +1,31 @@
+================================================================================
+CRYPTOCURRENCY ANALYSIS REPORT
+Symbol: BTCUSDT
+Generated: 2026-01-15T19:19:11.297340
+Overall Confidence: 0.59
+================================================================================
+
+FUNDAMENTAL ANALYSIS
+--------------------------------------------------------------------------------
+Overall Score: 5.8/10
+Tokenomics Score: 5.5/10
+Technology Score: 7/10
+
+TECHNICAL ANALYSIS
+--------------------------------------------------------------------------------
+Trend: BULLISH
+Momentum Score: 0.02
+Volatility: LOW
+
+PREDICTIONS (24H)
+--------------------------------------------------------------------------------
+Probability Up: 55.70%
+Probability Down: 44.30%
+
+RECOMMENDATIONS
+--------------------------------------------------------------------------------
+Suggestion: Hold or wait for clearer signals
+Position Size: MINIMAL
+Stop Loss: 97000.0
+
+================================================================================

@@ -1,0 +1,73 @@
+================================================================================
+CRYPTOCURRENCY ANALYSIS REPORT
+Symbol: SOLUSDT
+Generated: 2026-01-19T11:45:19.246829
+Overall Confidence: 0.57
+================================================================================
+
+MARKET DATA (SNAPSHOT)
+--------------------------------------------------------------------------------
+Current Price: $133.26
+24h High: $143.25
+24h Low: $130.00
+24h Change: -6.72%
+24h Volume: $3.28M
+
+FUNDAMENTAL ANALYSIS
+--------------------------------------------------------------------------------
+Overall Score: 4.5/10
+Tokenomics Score: 5.5/10
+Technology Score: 7/10
+
+TECHNICAL ANALYSIS
+--------------------------------------------------------------------------------
+Trend: BEARISH
+Momentum Score: 0.5
+Volatility: HIGH
+
+KEY TRADING LEVELS (NEXT 24H)
+--------------------------------------------------------------------------------
+Support Levels:
+  Support 1: $132.84 (Strength: 1.0, Distance: 0.32%)
+  Support 2: $130.33 (Strength: 1.0, Distance: 2.19%)
+  Support 3: $120.00 (Strength: 1.0, Distance: 9.95%)
+
+Resistance Levels:
+  Resistance 1: $134.05 (Strength: 1.0, Distance: 0.59%)
+  Resistance 2: $136.12 (Strength: 1.0, Distance: 2.15%)
+  Resistance 3: $138.72 (Strength: 1.0, Distance: 4.10%)
+
+PRICE PREDICTIONS (24H)
+--------------------------------------------------------------------------------
+Probability Up: 45.20%
+Probability Down: 54.80%
+Expected Trading Range: $132.84 - $134.05
+Expected Volatility: 19.40%
+
+RECOMMENDATIONS & TRADING STRATEGY
+--------------------------------------------------------------------------------
+Trading Suggestion: Hold or wait for clearer signals
+Position Size: MINIMAL
+Confidence Level: 17.00%
+
+Entry & Exit Strategy:
+  Stop Loss: $132.84
+  Take Profit Targets:
+    Target 1: $134.05
+    Target 2: $136.12
+    Target 3: $138.72
+
+Risk Assessment:
+  Overall Risk: MEDIUM
+  Volatility Risk: HIGH
+  Liquidity Risk: MEDIUM
+  Key Risk Factors: High volatility
+
+24-Hour Trading Range Analysis:
+  Current Price: $133.26
+  Immediate Support: $132.84 (-0.32% downside)
+  Immediate Resistance: $134.05 (0.59% upside)
+  Trading Range Width: $1.21 (0.91%)
+  Recommendation: Consider short positions near $134.05, target $132.84
+
+================================================================================

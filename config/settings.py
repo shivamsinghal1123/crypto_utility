@@ -38,7 +38,7 @@ DATA_STORAGE = {
 
 # Analysis Parameters
 ANALYSIS_PARAMS = {
-    'TECHNICAL_TIMEFRAMES': ['1h', '4h', '1d'],
+    'TECHNICAL_TIMEFRAMES': ['1h', '4h', '1d', '5m', '1m'],
     'NEWS_LOOKBACK_DAYS': 7,
     'SENTIMENT_WEIGHT': 0.3,
     'FUNDAMENTAL_WEIGHT': 0.4,

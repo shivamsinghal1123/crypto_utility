@@ -28,14 +28,14 @@ class PriceDataCollector:
         self.session.headers.update({'User-Agent': REQUEST_CONFIG['USER_AGENT']})
     
     @handle_api_errors
-    def get_ohlcv_data(self, symbol: str, interval: str = '1h', limit: int = 1000) -> Optional[pd.DataFrame]:
+    def get_ohlcv_data(self, symbol: str, interval: str = '1m', limit: int = 100000) -> Optional[pd.DataFrame]:
         """
         Get OHLCV (Open, High, Low, Close, Volume) data from Binance.
         
         Args:
             symbol: Trading pair symbol (e.g., 'BTCUSDT')
             interval: Candlestick interval (1m, 5m, 15m, 1h, 4h, 1d)
-            limit: Number of candles to retrieve (max 1000)
+            limit: Number of candles to retrieve (max 100000)
         
         Returns:
             DataFrame with OHLCV data or None if failed
@@ -46,7 +46,7 @@ class PriceDataCollector:
         params = {
             'symbol': symbol.upper(),
             'interval': interval,
-            'limit': min(limit, 1000)
+            'limit': min(limit, 100000)
         }
         
         response = self.session.get(
@@ -160,7 +160,7 @@ class PriceDataCollector:
         }
     
     @handle_api_errors
-    def get_recent_trades(self, symbol: str, limit: int = 500) -> Optional[pd.DataFrame]:
+    def get_recent_trades(self, symbol: str, limit: int = 1000) -> Optional[pd.DataFrame]:
         """
         Get recent trades.
         

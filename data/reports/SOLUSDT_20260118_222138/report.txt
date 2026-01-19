@@ -1,0 +1,72 @@
+================================================================================
+CRYPTOCURRENCY ANALYSIS REPORT
+Symbol: SOLUSDT
+Generated: 2026-01-18T22:21:38.686143
+Overall Confidence: 0.63
+================================================================================
+
+MARKET DATA (SNAPSHOT)
+--------------------------------------------------------------------------------
+Current Price: $142.05
+24h High: $144.58
+24h Low: $141.50
+24h Change: -1.15%
+24h Volume: $1.20M
+
+FUNDAMENTAL ANALYSIS
+--------------------------------------------------------------------------------
+Overall Score: 4.5/10
+Tokenomics Score: 5.5/10
+Technology Score: 7/10
+
+TECHNICAL ANALYSIS
+--------------------------------------------------------------------------------
+Trend: BEARISH
+Momentum Score: -0.17
+Volatility: LOW
+
+KEY TRADING LEVELS (NEXT 24H)
+--------------------------------------------------------------------------------
+Support Levels:
+  Support 1: $141.68 (Strength: 1.0, Distance: 0.26%)
+  Support 2: $140.75 (Strength: 1.0, Distance: 0.92%)
+  Support 3: $130.00 (Strength: 1.0, Distance: 8.48%)
+
+Resistance Levels:
+  Resistance 1: $142.72 (Strength: 1.0, Distance: 0.47%)
+  Resistance 2: $144.55 (Strength: 1.0, Distance: 1.76%)
+  Resistance 3: $146.69 (Strength: 1.0, Distance: 3.27%)
+
+PRICE PREDICTIONS (24H)
+--------------------------------------------------------------------------------
+Probability Up: 36.00%
+Probability Down: 64.00%
+Expected Trading Range: $141.68 - $142.72
+Expected Volatility: 3.95%
+
+RECOMMENDATIONS & TRADING STRATEGY
+--------------------------------------------------------------------------------
+Trading Suggestion: Consider short position or avoid
+Position Size: SMALL
+Confidence Level: 33.00%
+
+Entry & Exit Strategy:
+  Stop Loss: $141.68
+  Take Profit Targets:
+    Target 1: $142.72
+    Target 2: $144.55
+    Target 3: $146.69
+
+Risk Assessment:
+  Overall Risk: LOW
+  Volatility Risk: LOW
+  Liquidity Risk: MEDIUM
+
+24-Hour Trading Range Analysis:
+  Current Price: $142.05
+  Immediate Support: $141.68 (-0.26% downside)
+  Immediate Resistance: $142.72 (0.47% upside)
+  Trading Range Width: $1.04 (0.73%)
+  Recommendation: Consider short positions near $142.72, target $141.68
+
+================================================================================

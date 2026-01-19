@@ -26,7 +26,7 @@ class NewsCollector:
         self.cryptopanic_base = API_ENDPOINTS.get('CRYPTOPANIC_BASE', '')
     
     @handle_api_errors
-    def collect_rss_news(self, rss_url: str, days_back: int = 7) -> List[Dict]:
+    def collect_rss_news(self, rss_url: str, days_back: int = 30) -> List[Dict]:
         """
         Collect news from RSS feeds.
         
@@ -65,7 +65,7 @@ class NewsCollector:
         return articles
     
     @handle_api_errors
-    def collect_coindesk_news(self, days_back: int = 7) -> List[Dict]:
+    def collect_coindesk_news(self, days_back: int = 30) -> List[Dict]:
         """Collect news from CoinDesk RSS feed."""
         rss_url = API_ENDPOINTS.get('COINDESK_RSS', 'https://www.coindesk.com/arc/outboundfeeds/rss/')
         articles = self.collect_rss_news(rss_url, days_back)
@@ -77,7 +77,7 @@ class NewsCollector:
         return articles
     
     @handle_api_errors
-    def collect_cointelegraph_news(self, days_back: int = 7) -> List[Dict]:
+    def collect_cointelegraph_news(self, days_back: int = 30) -> List[Dict]:
         """Collect news from CoinTelegraph RSS feed."""
         rss_url = API_ENDPOINTS.get('COINTELEGRAPH_RSS', 'https://cointelegraph.com/rss')
         articles = self.collect_rss_news(rss_url, days_back)
@@ -89,7 +89,7 @@ class NewsCollector:
         return articles
     
     @handle_api_errors
-    def collect_cryptopanic_news(self, symbol: str, api_key: str = None, days_back: int = 7) -> List[Dict]:
+    def collect_cryptopanic_news(self, symbol: str, api_key: str = None, days_back: int = 30) -> List[Dict]:
         """
         Collect news from CryptoPanic API.
         
@@ -203,7 +203,7 @@ class NewsCollector:
         else:
             return mentions / 3.0
     
-    def collect_news(self, symbol: str, days_back: int = 7, api_key: str = None) -> List[Dict]:
+    def collect_news(self, symbol: str, days_back: int = 30, api_key: str = None) -> List[Dict]:
         """
         Collect news from all sources for a specific cryptocurrency.
         
