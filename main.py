@@ -24,9 +24,13 @@ from analysis.valuation import ValuationAnalyzer
 
 from prediction.support_resistance import SupportResistanceCalculator
 from prediction.forecast import PriceForecaster
+from prediction.trading_environment import TradingEnvironment
+from prediction.rl_agent import RLAgent
 
 from storage.database import DatabaseManager
 from storage.cache import get_cache
+from storage.prediction_tracker import PredictionTracker
+from storage.performance_analytics import PerformanceAnalytics
 
 from outputs.reports import ReportGenerator
 from outputs.visualizations import ChartGenerator
@@ -42,8 +46,13 @@ logger = logging.getLogger(__name__)
 class CryptoAnalyzer:
     """Main cryptocurrency analysis framework."""
     
-    def __init__(self):
-        """Initialize all components."""
+    def __init__(self, enable_rl: bool = False):
+        """
+        Initialize all components.
+        
+        Args:
+            enable_rl: Whether to enable RL-based predictions
+        """
         logger.info("Initializing Crypto Analyzer Framework")
         
         # API Keys
@@ -76,6 +85,27 @@ class CryptoAnalyzer:
         self.db = DatabaseManager()
         self.cache = get_cache()
         
+        # RL Components
+        self.enable_rl = enable_rl
+        self.prediction_tracker = PredictionTracker()
+        self.performance_analytics = PerformanceAnalytics()
+        
+        if enable_rl:
+            logger.info("Initializing RL components...")
+            self.rl_env = TradingEnvironment(state_dim=50)
+            self.rl_agent = RLAgent(
+                state_dim=50,
+                action_dim=3,  # up, down, neutral
+                learning_rate=0.001,
+                gamma=0.95
+            )
+            # Try to load existing RL model
+            self.rl_agent.load_model()
+            logger.info("RL components initialized")
+        else:
+            self.rl_env = None
+            self.rl_agent = None
+        
         # Output
         self.report_generator = ReportGenerator()
         self.chart_generator = ChartGenerator()
@@ -83,7 +113,7 @@ class CryptoAnalyzer:
         # Validator
         self.validator = DataValidator()
         
-        logger.info("Crypto Analyzer Framework initialized successfully")
+        logger.info(f"Crypto Analyzer Framework initialized successfully (RL: {enable_rl})")
     
     def collect_data(self, symbol: str) -> dict:
         """
@@ -218,6 +248,21 @@ class CryptoAnalyzer:
                 technical_results if 'technical_results' in locals() else {},
                 sentiment_results
             )
+            
+            # RL-Enhanced Prediction (if enabled)
+            if self.enable_rl and self.rl_agent:
+                print(f"🤖 Generating RL-enhanced prediction...")
+                rl_prediction = self._get_rl_prediction(collected_data, analysis_results)
+                
+                # Combine traditional and RL predictions
+                forecast_results['rl_prediction'] = rl_prediction
+                forecast_results['combined_prediction'] = self._combine_predictions(
+                    forecast_results, rl_prediction
+                )
+                
+                # Track prediction for future learning
+                self._track_prediction(symbol, forecast_results, analysis_results)
+            
             analysis_results['predictions'] = forecast_results
             self.db.save_analysis_results(symbol, 'forecast', forecast_results)
         
@@ -376,6 +421,246 @@ class CryptoAnalyzer:
             logger.error(f"Analysis failed for {symbol}: {e}", exc_info=True)
             print(f"\n❌ Analysis failed: {e}")
             return None
+    
+    def _get_rl_prediction(self, collected_data: dict, analysis_results: dict) -> dict:
+        """
+        Generate RL-based prediction.
+        
+        Args:
+            collected_data: Collected market data
+            analysis_results: Analysis results
+            
+        Returns:
+            RL prediction dictionary
+        """
+        # Encode current state
+        complete_data = {**collected_data, **analysis_results}
+        state = self.rl_env.encode_state(complete_data)
+        
+        # Get action from RL agent
+        action, confidence = self.rl_agent.select_action(state, explore=False)
+        predicted_direction = self.rl_env.action_space[action]
+        
+        # Get current price
+        current_price = collected_data.get('current_price_data', {}).get('price', 0)
+        
+        # Estimate price based on direction and historical volatility
+        technical = analysis_results.get('technical_analysis', {})
+        volatility_data = technical.get('volatility', {})
+        
+        # Extract numeric volatility value
+        if isinstance(volatility_data, dict):
+            # Try ATR first, then other metrics
+            volatility = volatility_data.get('atr', 0)
+            if hasattr(volatility, 'item'):  # numpy scalar
+                volatility = float(volatility.item())
+            elif not isinstance(volatility, (int, float)):
+                volatility = 0.02  # default fallback
+        else:
+            volatility = 0.02
+        
+        # Normalize volatility to percentage if it's absolute value
+        if volatility > 1:
+            volatility = volatility / current_price if current_price > 0 else 0.02
+        
+        if predicted_direction == 'up':
+            predicted_price = current_price * (1 + volatility * confidence)
+        elif predicted_direction == 'down':
+            predicted_price = current_price * (1 - volatility * confidence)
+        else:
+            predicted_price = current_price
+        
+        return {
+            'direction': predicted_direction,
+            'predicted_price': predicted_price,
+            'confidence': confidence,
+            'method': 'reinforcement_learning'
+        }
+    
+    def _combine_predictions(self, traditional_forecast: dict, rl_prediction: dict) -> dict:
+        """
+        Combine traditional and RL predictions.
+        
+        Args:
+            traditional_forecast: Traditional forecast results
+            rl_prediction: RL prediction results
+            
+        Returns:
+            Combined prediction
+        """
+        # Weight: 40% traditional, 60% RL (as RL improves over time)
+        trad_weight = 0.4
+        rl_weight = 0.6
+        
+        trad_price = traditional_forecast.get('predicted_price_24h', 0)
+        rl_price = rl_prediction.get('predicted_price', 0)
+        
+        combined_price = trad_weight * trad_price + rl_weight * rl_price
+        
+        # Direction: Use RL if high confidence, otherwise traditional
+        if rl_prediction['confidence'] > 0.7:
+            combined_direction = rl_prediction['direction']
+        else:
+            combined_direction = traditional_forecast.get('direction', 'neutral')
+        
+        return {
+            'predicted_price': combined_price,
+            'direction': combined_direction,
+            'confidence': (trad_weight * traditional_forecast.get('confidence', 0.5) + 
+                         rl_weight * rl_prediction['confidence']),
+            'method': 'hybrid_traditional_rl'
+        }
+    
+    def _track_prediction(self, symbol: str, forecast: dict, analysis: dict):
+        """
+        Track prediction for future verification and learning.
+        
+        Args:
+            symbol: Cryptocurrency symbol
+            forecast: Forecast results
+            analysis: Analysis results
+        """
+        try:
+            # Extract states for tracking
+            technical_state = analysis.get('technical_analysis', {})
+            sentiment_state = analysis.get('sentiment_analysis', {})
+            fundamental_state = analysis.get('fundamental_analysis', {})
+            
+            # Current market conditions
+            market_conditions = {
+                'rsi': technical_state.get('rsi', 50),
+                'trend': technical_state.get('trend', 'neutral'),
+                'sentiment': sentiment_state.get('overall_score', 0),
+                'timestamp': datetime.now().isoformat()
+            }
+            
+            # Get prediction details
+            if 'rl_prediction' in forecast:
+                pred = forecast['rl_prediction']
+            else:
+                pred = forecast
+            
+            # Save prediction to tracker
+            prediction_id = self.prediction_tracker.save_prediction(
+                symbol=symbol,
+                predicted_price=pred.get('predicted_price', 0),
+                predicted_direction=pred.get('direction', 'neutral'),
+                confidence=pred.get('confidence', 0.5),
+                technical_state=technical_state,
+                sentiment_state=sentiment_state,
+                fundamental_state=fundamental_state,
+                market_conditions=market_conditions
+            )
+            
+            logger.info(f"Prediction {prediction_id} tracked for {symbol}")
+        except Exception as e:
+            logger.error(f"Failed to track prediction: {e}")
+    
+    def verify_predictions(self):
+        """Verify past predictions and train RL agent."""
+        if not self.enable_rl:
+            logger.info("RL not enabled, skipping prediction verification")
+            return
+        
+        logger.info("Verifying past predictions...")
+        
+        # Get unverified predictions (24h+ old)
+        unverified = self.prediction_tracker.get_unverified_predictions(hours_old=24)
+        
+        if not unverified:
+            logger.info("No predictions to verify")
+            return
+        
+        print(f"\n🔍 Verifying {len(unverified)} predictions...")
+        
+        verified_count = 0
+        for prediction in unverified:
+            try:
+                symbol = prediction['symbol']
+                
+                # Get current price
+                current_data = self.price_collector.get_current_price(symbol)
+                if not current_data:
+                    continue
+                
+                actual_price = current_data.get('price', 0)
+                predicted_price = prediction['predicted_price']
+                
+                # Determine actual direction
+                if actual_price > predicted_price * 1.01:
+                    actual_direction = 'up'
+                elif actual_price < predicted_price * 0.99:
+                    actual_direction = 'down'
+                else:
+                    actual_direction = 'neutral'
+                
+                # Verify prediction
+                accuracy = self.prediction_tracker.verify_prediction(
+                    prediction['id'],
+                    actual_price,
+                    actual_direction
+                )
+                
+                # Train RL agent with this experience
+                if self.rl_agent:
+                    # Reconstruct state from saved data
+                    state_data = {
+                        'technical_analysis': prediction['technical_state'],
+                        'sentiment_analysis': prediction['sentiment_state'],
+                        'fundamental_analysis': prediction['fundamental_state'],
+                        'price_data': prediction['market_conditions']
+                    }
+                    
+                    state = self.rl_env.encode_state(state_data)
+                    action = self.rl_env.action_space.index(prediction['predicted_direction'])
+                    
+                    # Calculate reward
+                    reward = self.rl_env._calculate_reward(
+                        prediction['predicted_direction'],
+                        actual_direction,
+                        prediction['confidence'],
+                        predicted_price,
+                        actual_price
+                    )
+                    
+                    # Store experience
+                    self.rl_agent.store_experience(state, action, reward, state, True)
+                    
+                    # Train
+                    loss = self.rl_agent.train_step()
+                    if loss:
+                        logger.debug(f"RL training loss: {loss:.4f}")
+                
+                verified_count += 1
+                
+            except Exception as e:
+                logger.error(f"Failed to verify prediction {prediction['id']}: {e}")
+        
+        # Update target network periodically
+        if verified_count > 0 and verified_count % 10 == 0:
+            self.rl_agent.update_target_network()
+        
+        # Save RL model
+        if verified_count > 0:
+            self.rl_agent.save_model()
+        
+        print(f"✅ Verified {verified_count} predictions")
+        
+        # Show performance stats
+        stats = self.prediction_tracker.get_performance_stats()
+        print(f"\n📊 Performance Stats (Last 30 days):")
+        print(f"   Total Predictions: {stats['total_predictions']}")
+        print(f"   Average Accuracy: {stats['average_accuracy']:.2%}")
+        print(f"   Direction Accuracy: {stats['direction_accuracy']:.2%}")
+    
+    def analyze_symbol(self, symbol: str):
+        """
+        Alias for analyze_cryptocurrency for WebSocket integration.
+        
+        Args:
+            symbol: Cryptocurrency symbol
+        """
+        return self.analyze_cryptocurrency(symbol)
 
 
 def main():
@@ -394,7 +679,7 @@ Examples:
     parser.add_argument(
         '--symbol',
         type=str,
-        required=True,
+        required=False,
         help='Cryptocurrency symbol (e.g., BTCUSDT, ETH, ADA)'
     )
     
@@ -418,10 +703,65 @@ Examples:
         help='Export report (always enabled)'
     )
     
+    parser.add_argument(
+        '--enable-rl',
+        action='store_true',
+        help='Enable RL-based predictions and learning'
+    )
+    
+    parser.add_argument(
+        '--verify-predictions',
+        action='store_true',
+        help='Verify past predictions and train RL model'
+    )
+    
+    parser.add_argument(
+        '--monitor',
+        action='store_true',
+        help='Start real-time WebSocket monitoring'
+    )
+    
     args = parser.parse_args()
     
     # Create analyzer
-    analyzer = CryptoAnalyzer()
+    analyzer = CryptoAnalyzer(enable_rl=args.enable_rl)
+    
+    # Verify predictions mode
+    if args.verify_predictions:
+        print("\n🔍 PREDICTION VERIFICATION MODE")
+        print("="*80)
+        analyzer.verify_predictions()
+        sys.exit(0)
+    
+    # Real-time monitoring mode
+    if args.monitor:
+        if not args.symbol:
+            parser.error("--symbol is required for monitoring mode")
+            
+        from data_collection.websocket_client import RealTimeAnalyzer
+        
+        print("\n📡 REAL-TIME MONITORING MODE")
+        print("="*80)
+        print(f"Starting WebSocket monitoring for {args.symbol}")
+        
+        rt_analyzer = RealTimeAnalyzer(analyzer, rl_enabled=args.enable_rl)
+        
+        try:
+            rt_analyzer.start_monitoring([args.symbol])
+            print("\n✅ Monitoring active. Press Ctrl+C to stop.")
+            
+            # Keep main thread alive
+            import time
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            print("\n\n⏹️  Stopping monitoring...")
+            rt_analyzer.stop_monitoring()
+            sys.exit(0)
+    
+    # Regular analysis mode requires symbol
+    if not args.symbol:
+        parser.error("--symbol is required for analysis")
     
     # Run analysis
     results = analyzer.analyze_cryptocurrency(

@@ -1,0 +1,72 @@
+================================================================================
+CRYPTOCURRENCY ANALYSIS REPORT
+Symbol: ETHUSDT
+Generated: 2026-01-19T18:22:30.303232
+Overall Confidence: 0.58
+================================================================================
+
+MARKET DATA (SNAPSHOT)
+--------------------------------------------------------------------------------
+Current Price: $3,225.68
+24h High: $3,368.82
+24h Low: $3,177.68
+24h Change: -2.98%
+24h Volume: $464.52K
+
+FUNDAMENTAL ANALYSIS
+--------------------------------------------------------------------------------
+Overall Score: 4.0/10
+Tokenomics Score: 5.5/10
+Technology Score: 5/10
+
+TECHNICAL ANALYSIS
+--------------------------------------------------------------------------------
+Trend: BEARISH
+Momentum Score: 0.5
+Volatility: MEDIUM
+
+KEY TRADING LEVELS (NEXT 24H)
+--------------------------------------------------------------------------------
+Support Levels:
+  Support 1: $3,203.97 (Strength: 1.0, Distance: 0.67%)
+  Support 2: $3,113.46 (Strength: 1.0, Distance: 3.48%)
+  Support 3: $3,000.00 (Strength: 1.0, Distance: 7.00%)
+
+Resistance Levels:
+  Resistance 1: $3,244.84 (Strength: 1.0, Distance: 0.59%)
+  Resistance 2: $3,294.48 (Strength: 1.0, Distance: 2.13%)
+  Resistance 3: $3,340.00 (Strength: 1.0, Distance: 3.54%)
+
+PRICE PREDICTIONS (24H)
+--------------------------------------------------------------------------------
+Probability Up: 46.40%
+Probability Down: 53.60%
+Expected Trading Range: $3,203.97 - $3,244.84
+Expected Volatility: 13.48%
+
+RECOMMENDATIONS & TRADING STRATEGY
+--------------------------------------------------------------------------------
+Trading Suggestion: Hold or wait for clearer signals
+Position Size: MINIMAL
+Confidence Level: 17.00%
+
+Entry & Exit Strategy:
+  Stop Loss: $3,203.97
+  Take Profit Targets:
+    Target 1: $3,244.84
+    Target 2: $3,294.48
+    Target 3: $3,340.00
+
+Risk Assessment:
+  Overall Risk: LOW
+  Volatility Risk: MEDIUM
+  Liquidity Risk: MEDIUM
+
+24-Hour Trading Range Analysis:
+  Current Price: $3,225.68
+  Immediate Support: $3,203.97 (-0.67% downside)
+  Immediate Resistance: $3,244.84 (0.59% upside)
+  Trading Range Width: $40.87 (1.27%)
+  Recommendation: Consider short positions near $3,244.84, target $3,203.97
+
+================================================================================

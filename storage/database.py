@@ -101,17 +101,101 @@ class DatabaseManager:
             )
         ''')
         
-        # Predictions table
+        # Predictions table (Enhanced for RL tracking)
+        # Check if old schema exists and migrate if needed
+        cursor.execute("""
+            SELECT name FROM sqlite_master 
+            WHERE type='table' AND name='predictions'
+        """)
+        table_exists = cursor.fetchone() is not None
+        
+        if table_exists:
+            # Check if it's the old schema (has 'prediction_time' column)
+            cursor.execute("PRAGMA table_info(predictions)")
+            columns = [col[1] for col in cursor.fetchall()]
+            
+            if 'prediction_time' in columns and 'timestamp' not in columns:
+                # Old schema detected - migrate to new schema
+                logger.info("Migrating predictions table to new RL-enhanced schema...")
+                
+                # Rename old table
+                cursor.execute("ALTER TABLE predictions RENAME TO predictions_old")
+                
+                # Create new table with RL schema
+                cursor.execute('''
+                    CREATE TABLE predictions (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        symbol TEXT NOT NULL,
+                        timestamp TEXT NOT NULL,
+                        prediction_type TEXT NOT NULL,
+                        predicted_price REAL,
+                        predicted_direction TEXT,
+                        confidence REAL,
+                        actual_price REAL,
+                        actual_direction TEXT,
+                        accuracy REAL,
+                        technical_state TEXT,
+                        sentiment_state TEXT,
+                        fundamental_state TEXT,
+                        market_conditions TEXT,
+                        verified INTEGER DEFAULT 0,
+                        verification_timestamp TEXT,
+                        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+                    )
+                ''')
+                
+                # Migrate old data if any exists
+                cursor.execute("""
+                    INSERT INTO predictions 
+                    (symbol, timestamp, prediction_type, predicted_price, actual_price, created_at)
+                    SELECT 
+                        symbol, 
+                        prediction_time, 
+                        'migrated', 
+                        predicted_price, 
+                        actual_price,
+                        prediction_time
+                    FROM predictions_old
+                """)
+                
+                migrated_count = cursor.rowcount
+                logger.info(f"Migrated {migrated_count} old predictions to new schema")
+                
+                # Drop old table
+                cursor.execute("DROP TABLE predictions_old")
+        else:
+            # Create new table
+            cursor.execute('''
+                CREATE TABLE predictions (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    symbol TEXT NOT NULL,
+                    timestamp TEXT NOT NULL,
+                    prediction_type TEXT NOT NULL,
+                    predicted_price REAL,
+                    predicted_direction TEXT,
+                    confidence REAL,
+                    actual_price REAL,
+                    actual_direction TEXT,
+                    accuracy REAL,
+                    technical_state TEXT,
+                    sentiment_state TEXT,
+                    fundamental_state TEXT,
+                    market_conditions TEXT,
+                    verified INTEGER DEFAULT 0,
+                    verification_timestamp TEXT,
+                    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+                )
+            ''')
+        
+        # Create indices for predictions table
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS predictions (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                symbol TEXT NOT NULL,
-                prediction_time DATETIME NOT NULL,
-                target_time DATETIME,
-                predicted_price REAL,
-                actual_price REAL,
-                prediction_data JSON
-            )
+            CREATE INDEX IF NOT EXISTS idx_symbol_timestamp 
+            ON predictions(symbol, timestamp)
+        ''')
+        
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_verified 
+            ON predictions(verified)
         ''')
         
         # Performance metrics table

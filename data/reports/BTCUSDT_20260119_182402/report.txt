@@ -1,0 +1,72 @@
+================================================================================
+CRYPTOCURRENCY ANALYSIS REPORT
+Symbol: BTCUSDT
+Generated: 2026-01-19T18:24:02.447726
+Overall Confidence: 0.66
+================================================================================
+
+MARKET DATA (SNAPSHOT)
+--------------------------------------------------------------------------------
+Current Price: $93,054.45
+24h High: $95,531.12
+24h Low: $91,910.20
+24h Change: -2.16%
+24h Volume: $14.72K
+
+FUNDAMENTAL ANALYSIS
+--------------------------------------------------------------------------------
+Overall Score: 5.8/10
+Tokenomics Score: 5.5/10
+Technology Score: 7/10
+
+TECHNICAL ANALYSIS
+--------------------------------------------------------------------------------
+Trend: BEARISH
+Momentum Score: 0.5
+Volatility: MEDIUM
+
+KEY TRADING LEVELS (NEXT 24H)
+--------------------------------------------------------------------------------
+Support Levels:
+  Support 1: $93,001.08 (Strength: 1.0, Distance: 0.06%)
+  Support 2: $92,489.07 (Strength: 1.0, Distance: 0.61%)
+  Support 3: $91,111.59 (Strength: 1.0, Distance: 2.09%)
+
+Resistance Levels:
+  Resistance 1: $93,582.52 (Strength: 1.0, Distance: 0.57%)
+  Resistance 2: $94,566.09 (Strength: 1.0, Distance: 1.62%)
+  Resistance 3: $95,764.51 (Strength: 1.0, Distance: 2.91%)
+
+PRICE PREDICTIONS (24H)
+--------------------------------------------------------------------------------
+Probability Up: 55.80%
+Probability Down: 44.20%
+Expected Trading Range: $93,001.08 - $93,582.52
+Expected Volatility: 9.77%
+
+RECOMMENDATIONS & TRADING STRATEGY
+--------------------------------------------------------------------------------
+Trading Suggestion: Hold or wait for clearer signals
+Position Size: MINIMAL
+Confidence Level: 17.00%
+
+Entry & Exit Strategy:
+  Stop Loss: $93,001.08
+  Take Profit Targets:
+    Target 1: $93,582.52
+    Target 2: $94,566.09
+    Target 3: $95,764.51
+
+Risk Assessment:
+  Overall Risk: LOW
+  Volatility Risk: MEDIUM
+  Liquidity Risk: MEDIUM
+
+24-Hour Trading Range Analysis:
+  Current Price: $93,054.45
+  Immediate Support: $93,001.08 (-0.06% downside)
+  Immediate Resistance: $93,582.52 (0.57% upside)
+  Trading Range Width: $581.44 (0.62%)
+  Recommendation: Consider short positions near $93,582.52, target $93,001.08
+
+================================================================================

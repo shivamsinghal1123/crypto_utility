@@ -1,0 +1,72 @@
+================================================================================
+CRYPTOCURRENCY ANALYSIS REPORT
+Symbol: SOLUSDT
+Generated: 2026-01-20T14:40:12.695424
+Overall Confidence: 0.55
+================================================================================
+
+MARKET DATA (SNAPSHOT)
+--------------------------------------------------------------------------------
+Current Price: $128.83
+24h High: $135.16
+24h Low: $128.36
+24h Change: -3.66%
+24h Volume: $2.30M
+
+FUNDAMENTAL ANALYSIS
+--------------------------------------------------------------------------------
+Overall Score: 4.5/10
+Tokenomics Score: 5.5/10
+Technology Score: 7/10
+
+TECHNICAL ANALYSIS
+--------------------------------------------------------------------------------
+Trend: BEARISH
+Momentum Score: 0.5
+Volatility: MEDIUM
+
+KEY TRADING LEVELS (NEXT 24H)
+--------------------------------------------------------------------------------
+Support Levels:
+  Support 1: $127.50 (Strength: 1.0, Distance: 1.03%)
+  Support 2: $125.59 (Strength: 1.0, Distance: 2.51%)
+  Support 3: $120.00 (Strength: 1.0, Distance: 6.85%)
+
+Resistance Levels:
+  Resistance 1: $130.02 (Strength: 1.0, Distance: 0.93%)
+  Resistance 2: $132.53 (Strength: 1.0, Distance: 2.87%)
+  Resistance 3: $133.37 (Strength: 1.0, Distance: 3.52%)
+
+PRICE PREDICTIONS (24H)
+--------------------------------------------------------------------------------
+Probability Up: 45.30%
+Probability Down: 54.70%
+Expected Trading Range: $127.50 - $130.02
+Expected Volatility: 9.77%
+
+RECOMMENDATIONS & TRADING STRATEGY
+--------------------------------------------------------------------------------
+Trading Suggestion: Hold or wait for clearer signals
+Position Size: MINIMAL
+Confidence Level: 17.00%
+
+Entry & Exit Strategy:
+  Stop Loss: $127.50
+  Take Profit Targets:
+    Target 1: $130.02
+    Target 2: $132.53
+    Target 3: $133.37
+
+Risk Assessment:
+  Overall Risk: LOW
+  Volatility Risk: MEDIUM
+  Liquidity Risk: MEDIUM
+
+24-Hour Trading Range Analysis:
+  Current Price: $128.83
+  Immediate Support: $127.50 (-1.03% downside)
+  Immediate Resistance: $130.02 (0.92% upside)
+  Trading Range Width: $2.52 (1.96%)
+  Recommendation: Consider short positions near $130.02, target $127.50
+
+================================================================================

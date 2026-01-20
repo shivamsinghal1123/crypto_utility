@@ -1,0 +1,176 @@
+{
+  "metadata": {
+    "symbol": "BTCUSDT",
+    "analysis_timestamp": "2026-01-19T18:19:43.405484",
+    "data_freshness": {
+      "news_data": "5.5 hours old"
+    },
+    "confidence_score": 0.66
+  },
+  "market_data": {
+    "current_price": 93068.94,
+    "price_change_24h": -2076.9,
+    "price_change_percent_24h": -2.183,
+    "high_24h": 95531.12,
+    "low_24h": 91910.2,
+    "volume_24h": 14712.06259,
+    "quote_volume_24h": 1374050568.9923542,
+    "trades_24h": 2995966,
+    "timestamp": "2026-01-19 18:19:42.012000"
+  },
+  "fundamental_analysis": {
+    "overall_score": 5.8,
+    "tokenomics_score": 5.5,
+    "team_score": 4.5,
+    "technology_score": 7,
+    "adoption_score": 2,
+    "detailed_metrics": {
+      "market_cap": "$1859.31B",
+      "supply_metrics": {
+        "circulating_supply": 19977803.0,
+        "total_supply": 19977803.0,
+        "max_supply": 21000000.0,
+        "inflation_rate": 0.51
+      },
+      "valuation_ratios": {
+        "nvt_ratio": 1357.92
+      }
+    }
+  },
+  "technical_analysis": {
+    "trend_direction": "bearish",
+    "trend_strength": 1.0,
+    "momentum_score": 0.5,
+    "volatility_assessment": "medium",
+    "key_levels": {
+      "support_levels": [
+        88719.81,
+        90979.06,
+        94523.63
+      ],
+      "resistance_levels": [
+        89538.52,
+        92061.54,
+        95740.23
+      ],
+      "current_price": 93068.94
+    },
+    "indicators": {
+      "rsi": {
+        "value": 22.61,
+        "signal": "oversold"
+      },
+      "macd": {
+        "value": -525.607,
+        "signal": "bullish",
+        "histogram": 38.6583
+      }
+    }
+  },
+  "sentiment_analysis": {
+    "overall_sentiment": 0.082,
+    "news_sentiment": 0.137,
+    "social_sentiment": 0.0,
+    "market_fear_greed": {
+      "score": 49.7,
+      "category": "Neutral",
+      "components": {
+        "sentiment": 53.4,
+        "momentum": 44.5,
+        "volatility": 50.0
+      }
+    }
+  },
+  "predictions": {
+    "next_24h_support_levels": [
+      {
+        "level": 93001.08,
+        "strength": 1.0,
+        "methods": [
+          "psychological",
+          "pivot_points"
+        ],
+        "distance_percent": 0.07
+      },
+      {
+        "level": 92489.07,
+        "strength": 1.0,
+        "methods": [
+          "psychological",
+          "pivot_points"
+        ],
+        "distance_percent": 0.62
+      },
+      {
+        "level": 91112.32,
+        "strength": 1.0,
+        "methods": [
+          "psychological",
+          "bollinger_bands"
+        ],
+        "distance_percent": 2.1
+      }
+    ],
+    "next_24h_resistance_levels": [
+      {
+        "level": 93582.99,
+        "strength": 1.0,
+        "methods": [
+          "fibonacci",
+          "psychological",
+          "moving_averages",
+          "pivot_points",
+          "bollinger_bands"
+        ],
+        "distance_percent": 0.55
+      },
+      {
+        "level": 94566.18,
+        "strength": 1.0,
+        "methods": [
+          "moving_averages",
+          "psychological",
+          "fibonacci"
+        ],
+        "distance_percent": 1.61
+      },
+      {
+        "level": 95764.51,
+        "strength": 1.0,
+        "methods": [
+          "fibonacci",
+          "bollinger_bands"
+        ],
+        "distance_percent": 2.9
+      }
+    ],
+    "probability_up": 0.558,
+    "probability_down": 0.442,
+    "expected_volatility": 9.77,
+    "price_forecast": {
+      "current_price": 93068.94,
+      "forecasted_price": 91687.65,
+      "expected_change": -1.48,
+      "trend_direction": "downward",
+      "periods_ahead": 24
+    }
+  },
+  "risk_assessment": {
+    "overall_risk": "low",
+    "liquidity_risk": "medium",
+    "volatility_risk": "medium",
+    "fundamental_risk": "medium",
+    "risk_factors": []
+  },
+  "recommendations": {
+    "mock_trading_suggestion": "Hold or wait for clearer signals",
+    "position_sizing": "minimal",
+    "stop_loss_suggestion": 93001.08,
+    "take_profit_levels": [
+      93582.99,
+      94566.18,
+      95764.51
+    ],
+    "confidence": 0.17
+  }
+}
