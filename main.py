@@ -35,6 +35,8 @@ from storage.performance_analytics import PerformanceAnalytics
 from outputs.reports import ReportGenerator
 from outputs.visualizations import ChartGenerator
 
+from tests.excel_report_generator import ExcelReportGenerator
+
 from utils.helpers import setup_logging, normalize_symbol, get_coin_id_mapping
 from utils.validators import DataValidator
 
@@ -109,6 +111,7 @@ class CryptoAnalyzer:
         # Output
         self.report_generator = ReportGenerator()
         self.chart_generator = ChartGenerator()
+        self.excel_generator = ExcelReportGenerator()
         
         # Validator
         self.validator = DataValidator()
@@ -306,6 +309,16 @@ class CryptoAnalyzer:
         
         output_files['json_report'] = json_report_path
         output_files['txt_report'] = txt_report_path
+        
+        # Generate/Update Excel report
+        print(f"📊 Updating Excel report...")
+        try:
+            excel_path = self.excel_generator.update_excel_with_new_report(symbol, report)
+            if excel_path:
+                output_files['excel_report'] = excel_path
+                print(f"   ✓ Excel report updated: {excel_path}")
+        except Exception as e:
+            logger.warning(f"Failed to generate Excel report: {e}")
         
         # Display results
         self.report_generator.display_results(report)

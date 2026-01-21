@@ -1,0 +1,70 @@
+"""
+QUICK START GUIDE - Excel Report Generator
+===========================================
+
+AUTOMATIC MODE (Recommended):
+-----------------------------
+Every time you run the main analysis, Excel reports are automatically updated:
+
+    python main.py --symbol SOLUSDT
+    
+After completion, check: crypto_analyzer/tests/SOLUSDT_analysis.xlsx
+
+
+MANUAL MODE:
+------------
+Generate Excel reports on demand:
+
+1. For all symbols:
+   cd crypto_analyzer/tests
+   python generate_excel_reports.py
+
+2. For specific symbol:
+   python generate_excel_reports.py BTCUSDT
+
+3. For multiple symbols:
+   python generate_excel_reports.py BTCUSDT ETHUSDT SOLUSDT
+
+
+OUTPUT LOCATION:
+----------------
+All Excel files are saved in: crypto_analyzer/tests/
+File format: {SYMBOL}_analysis.xlsx
+
+
+WHAT'S INCLUDED IN EXCEL FILE:
+-------------------------------
+✓ Dashboard - Latest metrics and summary
+✓ Data - Complete raw data table
+✓ Price Analysis - Price charts + volume
+✓ Technical Analysis - RSI, MACD, trends
+✓ Fundamental Analysis - All scoring metrics
+✓ Sentiment Analysis - Sentiment + Fear & Greed
+✓ Predictions - Forecasts + support/resistance
+
+
+EXCEL FILE FEATURES:
+--------------------
+✓ Multiple worksheets with organized data
+✓ Interactive charts (line, bar)
+✓ Formatted headers and data
+✓ Auto-updated with each new analysis
+✓ Historical trend tracking
+✓ Time-series comparisons
+
+
+DEPENDENCIES:
+-------------
+pip install pandas openpyxl
+
+
+TROUBLESHOOTING:
+----------------
+- No Excel file? Check crypto_analyzer/tests/ directory
+- Missing data? Ensure reports exist in data/reports/
+- Import errors? Install: pip install pandas openpyxl
+
+
+For detailed documentation, see:
+crypto_analyzer/tests/README_EXCEL_REPORTS.md
+"""
