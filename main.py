@@ -310,15 +310,21 @@ class CryptoAnalyzer:
         output_files['json_report'] = json_report_path
         output_files['txt_report'] = txt_report_path
         
-        # Generate/Update Excel report
-        print(f"📊 Updating Excel report...")
+        # Generate/Update Excel report with all historical data
+        print(f"📊 Updating Excel report with historical data...")
         try:
             excel_path = self.excel_generator.update_excel_with_new_report(symbol, report)
             if excel_path:
                 output_files['excel_report'] = excel_path
+                # Count reports for this symbol
+                reports_count = len(self.excel_generator.collect_symbol_reports(symbol))
                 print(f"   ✓ Excel report updated: {excel_path}")
+                print(f"   ✓ Total reports included: {reports_count}")
+            else:
+                logger.warning(f"Excel report generation returned no path")
         except Exception as e:
-            logger.warning(f"Failed to generate Excel report: {e}")
+            logger.error(f"Failed to generate Excel report: {e}", exc_info=True)
+            print(f"   ⚠️  Excel report generation failed (check logs for details)")
         
         # Display results
         self.report_generator.display_results(report)
