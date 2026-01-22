@@ -10,6 +10,7 @@ from typing import Dict, List, Optional, Tuple
 from datetime import datetime, timedelta
 import time
 import logging
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from config.settings import API_ENDPOINTS, RATE_LIMITS, REQUEST_CONFIG
 from utils.helpers import handle_api_errors, RateLimiter
@@ -26,8 +27,19 @@ class PriceDataCollector:
         self.rate_limiter = RateLimiter(RATE_LIMITS['BINANCE'], 60)
         self.session = requests.Session()
         self.session.headers.update({'User-Agent': REQUEST_CONFIG['USER_AGENT']})
+        # Disable SSL verification for environments with self-signed certificates
+        self.session.verify = False
+        # Suppress SSL warnings
+        import urllib3
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     
     @handle_api_errors
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(5),
+        wait=wait_exponential(multiplier=1, min=1, max=30),
+        retry=retry_if_exception_type((requests.exceptions.RequestException, requests.exceptions.Timeout))
+    )
     def get_ohlcv_data(self, symbol: str, interval: str = '1m', limit: int = 100000) -> Optional[pd.DataFrame]:
         """
         Get OHLCV (Open, High, Low, Close, Volume) data from Binance.
@@ -78,6 +90,12 @@ class PriceDataCollector:
         return df
     
     @handle_api_errors
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(5),
+        wait=wait_exponential(multiplier=1, min=1, max=30),
+        retry=retry_if_exception_type((requests.exceptions.RequestException, requests.exceptions.Timeout))
+    )
     def get_current_price(self, symbol: str) -> Optional[Dict]:
         """
         Get current price and 24h statistics.

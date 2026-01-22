@@ -1,0 +1,14 @@
+# Crypto Analyzer Scheduler Configuration
+# Multiple symbols can be configured with different intervals
+
+schedules:
+  - symbol: BTCUSDT
+    every: 15m
+  
+  - symbol: ETHUSDT
+    every: 30m
+  
+  - symbol: SOLUSDT
+    every: 30m
+
+# Valid interval values: 5m, 10m, 15m, 20m, 30m, 60m (or 1h)

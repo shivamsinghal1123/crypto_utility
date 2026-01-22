@@ -1,0 +1,197 @@
+{
+  "metadata": {
+    "symbol": "SOLUSDT",
+    "analysis_timestamp": "2026-01-22T10:20:26.510617",
+    "data_freshness": {
+      "news_data": "15.5 hours old"
+    },
+    "confidence_score": 0.62
+  },
+  "market_data": {
+    "current_price": 130.49,
+    "price_change_24h": 2.62,
+    "price_change_percent_24h": 2.049,
+    "high_24h": 132.17,
+    "low_24h": 125.26,
+    "volume_24h": 3076104.036,
+    "quote_volume_24h": 396518874.96492,
+    "trades_24h": 1542990,
+    "timestamp": "2026-01-22 10:20:20.782000"
+  },
+  "fundamental_analysis": {
+    "overall_score": 4.5,
+    "tokenomics_score": 5.5,
+    "team_score": 4.5,
+    "technology_score": 7,
+    "adoption_score": 2,
+    "detailed_metrics": {
+      "market_cap": "$73.82B",
+      "supply_metrics": {
+        "circulating_supply": 565705303.8764673,
+        "total_supply": 618771449.3212291,
+        "max_supply": 0,
+        "inflation_rate": 9.38
+      },
+      "valuation_ratios": {
+        "nvt_ratio": 183.9
+      }
+    }
+  },
+  "technical_analysis": {
+    "trend_direction": "bullish",
+    "trend_strength": 1.0,
+    "momentum_score": 0.06,
+    "volatility_assessment": "medium",
+    "key_levels": {
+      "support_levels": [
+        128.88,
+        135.27,
+        141.3
+      ],
+      "resistance_levels": [
+        131.6,
+        138.95,
+        145.07
+      ],
+      "current_price": 130.49
+    },
+    "indicators": {
+      "rsi": {
+        "value": 53.04,
+        "signal": "neutral"
+      },
+      "macd": {
+        "value": 0.4808,
+        "signal": "bullish",
+        "histogram": 0.1647
+      }
+    }
+  },
+  "sentiment_analysis": {
+    "overall_sentiment": 0.049,
+    "news_sentiment": 0.082,
+    "social_sentiment": 0.0,
+    "market_fear_greed": {
+      "score": 52.4,
+      "category": "Neutral",
+      "components": {
+        "sentiment": 52.0,
+        "momentum": 55.1,
+        "volatility": 50.0
+      }
+    }
+  },
+  "predictions": {
+    "next_24h_support_levels": [
+      {
+        "level": 129.24,
+        "strength": 1.0,
+        "methods": [
+          "fibonacci",
+          "moving_averages",
+          "bollinger_bands",
+          "pivot_points",
+          "psychological"
+        ],
+        "distance_percent": 0.96
+      },
+      {
+        "level": 125.54,
+        "strength": 1.0,
+        "methods": [
+          "bollinger_bands"
+        ],
+        "distance_percent": 3.79
+      },
+      {
+        "level": 120.0,
+        "strength": 1.0,
+        "methods": [
+          "psychological"
+        ],
+        "distance_percent": 8.04
+      },
+      {
+        "level": 110.0,
+        "strength": 1.0,
+        "methods": [
+          "psychological"
+        ],
+        "distance_percent": 15.7
+      }
+    ],
+    "next_24h_resistance_levels": [
+      {
+        "level": 130.65,
+        "strength": 1.0,
+        "methods": [
+          "pivot_points"
+        ],
+        "distance_percent": 0.24
+      },
+      {
+        "level": 132.2,
+        "strength": 1.0,
+        "methods": [
+          "bollinger_bands",
+          "fibonacci"
+        ],
+        "distance_percent": 1.31
+      },
+      {
+        "level": 134.05,
+        "strength": 1.0,
+        "methods": [
+          "fibonacci"
+        ],
+        "distance_percent": 2.73
+      },
+      {
+        "level": 136.26,
+        "strength": 1.0,
+        "methods": [
+          "fibonacci"
+        ],
+        "distance_percent": 4.42
+      },
+      {
+        "level": 139.38,
+        "strength": 1.0,
+        "methods": [
+          "moving_averages",
+          "psychological",
+          "fibonacci"
+        ],
+        "distance_percent": 6.81
+      }
+    ],
+    "probability_up": 0.655,
+    "probability_down": 0.345,
+    "expected_volatility": 24.13,
+    "price_forecast": {
+      "current_price": 130.49,
+      "forecasted_price": 130.23,
+      "expected_change": -0.2,
+      "trend_direction": "downward",
+      "periods_ahead": 24
+    }
+  },
+  "risk_assessment": {
+    "overall_risk": "low",
+    "liquidity_risk": "medium",
+    "volatility_risk": "medium",
+    "fundamental_risk": "medium",
+    "risk_factors": []
+  },
+  "recommendations": {
+    "mock_trading_suggestion": "Consider long position",
+    "position_sizing": "moderate",
+    "stop_loss_suggestion": 129.24,
+    "take_profit_levels": [
+      130.65,
+      132.2,
+      134.05
+    ],
+    "confidence": 0.33
+  }
+}

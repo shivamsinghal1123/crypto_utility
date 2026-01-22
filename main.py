@@ -7,6 +7,9 @@ import sys
 import argparse
 from datetime import datetime
 import logging
+import os
+import yaml
+from dotenv import load_dotenv
 
 # Import all modules
 from config.api_keys import APIKeys
@@ -39,6 +42,11 @@ from tests.excel_report_generator import ExcelReportGenerator
 
 from utils.helpers import setup_logging, normalize_symbol, get_coin_id_mapping
 from utils.validators import DataValidator
+from utils.pipeline import AnalysisPipeline
+from utils.scheduler import start_scheduler, parse_interval
+
+# Load environment variables
+load_dotenv()
 
 # Setup logging
 setup_logging()
@@ -689,9 +697,17 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python main.py --symbol BTCUSDT
-  python main.py --symbol ETH --no-charts
-  python main.py --symbol ADAUSDT --analysis full
+  # Run once (original behavior)
+  python main.py --symbol BTCUSDT --run-once
+  python main.py --symbol ETH --run-once --no-charts
+  
+  # Schedule single symbol
+  python main.py --symbol BTCUSDT --every 15m
+  python main.py --symbol ETHUSDT --every 30m --enable-rl
+  
+  # Schedule multiple symbols from config
+  python main.py --config config.yaml
+  python main.py --config config.yaml --enable-rl
         """
     )
     
@@ -740,6 +756,32 @@ Examples:
         help='Start real-time WebSocket monitoring'
     )
     
+    # Scheduler arguments
+    parser.add_argument(
+        '--run-once',
+        action='store_true',
+        help='Run analysis once and exit (preserves original behavior)'
+    )
+    
+    parser.add_argument(
+        '--every',
+        type=str,
+        help='Schedule interval: 5m, 10m, 15m, 20m, 30m, 60m (or 1h)'
+    )
+    
+    parser.add_argument(
+        '--config',
+        type=str,
+        help='Path to config.yaml for scheduling multiple symbols'
+    )
+    
+    parser.add_argument(
+        '--kline-interval',
+        type=str,
+        default='1h',
+        help='Binance kline interval for data collection (default: 1h)'
+    )
+    
     args = parser.parse_args()
     
     # Create analyzer
@@ -778,20 +820,87 @@ Examples:
             rt_analyzer.stop_monitoring()
             sys.exit(0)
     
-    # Regular analysis mode requires symbol
-    if not args.symbol:
-        parser.error("--symbol is required for analysis")
-    
-    # Run analysis
-    results = analyzer.analyze_cryptocurrency(
-        symbol=args.symbol,
-        generate_charts=not args.no_charts
-    )
-    
-    if results:
+    # Scheduler mode - config file
+    if args.config:
+        print("\n⏰ SCHEDULER MODE - Config File")
+        print("="*80)
+        
+        if not os.path.exists(args.config):
+            print(f"❌ Config file not found: {args.config}")
+            sys.exit(1)
+        
+        # Load config
+        with open(args.config, 'r', encoding='utf-8') as f:
+            config = yaml.safe_load(f)
+        
+        schedules = config.get('schedules', [])
+        if not schedules:
+            print("❌ No schedules found in config file")
+            sys.exit(1)
+        
+        print(f"📋 Loaded {len(schedules)} schedule(s) from {args.config}")
+        for sch in schedules:
+            print(f"   - {sch['symbol']} every {sch['every']}")
+        
+        # Create pipeline
+        pipeline = AnalysisPipeline(analyzer)
+        
+        # Start scheduler
+        start_scheduler(
+            schedules=schedules,
+            pipeline=pipeline,
+            kline_interval=args.kline_interval,
+            generate_charts=not args.no_charts
+        )
         sys.exit(0)
-    else:
-        sys.exit(1)
+    
+    # Scheduler mode - single symbol
+    if args.symbol and args.every:
+        print("\n⏰ SCHEDULER MODE - Single Symbol")
+        print("="*80)
+        
+        try:
+            # Validate interval
+            minutes = parse_interval(args.every)
+            print(f"📊 Scheduling {args.symbol} every {minutes} minutes")
+            
+            # Create pipeline
+            pipeline = AnalysisPipeline(analyzer)
+            
+            # Start scheduler with single schedule
+            schedules = [{"symbol": args.symbol.upper(), "every": args.every}]
+            start_scheduler(
+                schedules=schedules,
+                pipeline=pipeline,
+                kline_interval=args.kline_interval,
+                generate_charts=not args.no_charts
+            )
+            
+        except ValueError as e:
+            print(f"❌ {str(e)}")
+            sys.exit(1)
+        
+        sys.exit(0)
+    
+    # Run-once mode (original behavior)
+    if args.run_once or (args.symbol and not args.every):
+        if not args.symbol:
+            parser.error("--symbol is required for run-once mode")
+        
+        # Run analysis once
+        results = analyzer.analyze_cryptocurrency(
+            symbol=args.symbol,
+            generate_charts=not args.no_charts
+        )
+        
+        if results:
+            sys.exit(0)
+        else:
+            sys.exit(1)
+    
+    # No valid mode selected, show help
+    parser.print_help()
+    sys.exit(1)
 
 
 if __name__ == "__main__":

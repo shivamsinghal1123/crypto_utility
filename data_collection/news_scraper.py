@@ -10,6 +10,7 @@ from typing import Dict, List, Optional
 from datetime import datetime, timedelta
 import logging
 from textblob import TextBlob
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from config.settings import API_ENDPOINTS, REQUEST_CONFIG
 from utils.helpers import handle_api_errors
@@ -24,8 +25,19 @@ class NewsCollector:
         self.session = requests.Session()
         self.session.headers.update({'User-Agent': REQUEST_CONFIG['USER_AGENT']})
         self.cryptopanic_base = API_ENDPOINTS.get('CRYPTOPANIC_BASE', '')
+        # Disable SSL verification for environments with self-signed certificates
+        self.session.verify = False
+        # Suppress SSL warnings
+        import urllib3
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     
     @handle_api_errors
+    @retry(
+        reraise=True,
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=20),
+        retry=retry_if_exception_type((requests.exceptions.RequestException, requests.exceptions.Timeout))
+    )
     def collect_rss_news(self, rss_url: str, days_back: int = 30) -> List[Dict]:
         """
         Collect news from RSS feeds.
