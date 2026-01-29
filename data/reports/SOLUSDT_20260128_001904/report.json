@@ -1,0 +1,209 @@
+{
+  "metadata": {
+    "symbol": "SOLUSDT",
+    "analysis_timestamp": "2026-01-28T00:19:04.157611",
+    "data_freshness": {
+      "news_data": "7.3 hours old"
+    },
+    "confidence_score": 0.6
+  },
+  "market_data": {
+    "current_price": 125.15,
+    "price_change_24h": 0.62,
+    "price_change_percent_24h": 0.498,
+    "high_24h": 126.79,
+    "low_24h": 123.12,
+    "volume_24h": 1788683.963,
+    "quote_volume_24h": 222754300.31417,
+    "trades_24h": 939410,
+    "timestamp": "2026-01-28 00:18:58.789000"
+  },
+  "fundamental_analysis": {
+    "overall_score": 4.5,
+    "tokenomics_score": 5.5,
+    "team_score": 4.5,
+    "technology_score": 7,
+    "adoption_score": 2,
+    "detailed_metrics": {
+      "market_cap": "$70.84B",
+      "supply_metrics": {
+        "circulating_supply": 566069241.1599623,
+        "total_supply": 619178155.1510031,
+        "max_supply": 0,
+        "inflation_rate": 9.38
+      },
+      "valuation_ratios": {
+        "nvt_ratio": 316.47
+      }
+    }
+  },
+  "technical_analysis": {
+    "trend_direction": "bullish",
+    "trend_strength": 1.0,
+    "momentum_score": 0.08,
+    "volatility_assessment": "low",
+    "key_levels": {
+      "support_levels": [
+        125.13,
+        134.29,
+        141.3
+      ],
+      "resistance_levels": [
+        127.44,
+        135.79,
+        144.65
+      ],
+      "current_price": 125.15
+    },
+    "indicators": {
+      "rsi": {
+        "value": 53.95,
+        "signal": "neutral"
+      },
+      "macd": {
+        "value": 0.2767,
+        "signal": "bullish",
+        "histogram": 0.072
+      }
+    }
+  },
+  "sentiment_analysis": {
+    "overall_sentiment": -0.014,
+    "news_sentiment": -0.023,
+    "social_sentiment": 0.0,
+    "market_fear_greed": {
+      "score": 59.1,
+      "category": "Neutral",
+      "components": {
+        "sentiment": 49.4,
+        "momentum": 51.2,
+        "volatility": 80.0
+      }
+    }
+  },
+  "predictions": {
+    "next_24h_support_levels": [
+      {
+        "level": 124.21,
+        "strength": 1.0,
+        "methods": [
+          "moving_averages",
+          "fibonacci",
+          "bollinger_bands"
+        ],
+        "distance_percent": 0.75
+      },
+      {
+        "level": 122.6,
+        "strength": 1.0,
+        "methods": [
+          "pivot_points",
+          "moving_averages",
+          "fibonacci",
+          "bollinger_bands"
+        ],
+        "distance_percent": 2.04
+      },
+      {
+        "level": 120.14,
+        "strength": 1.0,
+        "methods": [
+          "pivot_points",
+          "psychological",
+          "fibonacci"
+        ],
+        "distance_percent": 4.01
+      },
+      {
+        "level": 110.0,
+        "strength": 1.0,
+        "methods": [
+          "psychological"
+        ],
+        "distance_percent": 12.11
+      },
+      {
+        "level": 100.0,
+        "strength": 1.0,
+        "methods": [
+          "psychological"
+        ],
+        "distance_percent": 20.1
+      }
+    ],
+    "next_24h_resistance_levels": [
+      {
+        "level": 125.55,
+        "strength": 1.0,
+        "methods": [
+          "pivot_points",
+          "fibonacci",
+          "bollinger_bands"
+        ],
+        "distance_percent": 0.32
+      },
+      {
+        "level": 127.66,
+        "strength": 1.0,
+        "methods": [
+          "moving_averages",
+          "pivot_points",
+          "fibonacci"
+        ],
+        "distance_percent": 2.01
+      },
+      {
+        "level": 130.0,
+        "strength": 1.0,
+        "methods": [
+          "psychological"
+        ],
+        "distance_percent": 3.88
+      },
+      {
+        "level": 140.0,
+        "strength": 1.0,
+        "methods": [
+          "psychological"
+        ],
+        "distance_percent": 11.87
+      },
+      {
+        "level": 150.0,
+        "strength": 1.0,
+        "methods": [
+          "psychological"
+        ],
+        "distance_percent": 19.86
+      }
+    ],
+    "probability_up": 0.649,
+    "probability_down": 0.351,
+    "expected_volatility": 12.26,
+    "price_forecast": {
+      "current_price": 125.15,
+      "forecasted_price": 127.64,
+      "expected_change": 1.99,
+      "trend_direction": "upward",
+      "periods_ahead": 24
+    }
+  },
+  "risk_assessment": {
+    "overall_risk": "low",
+    "liquidity_risk": "medium",
+    "volatility_risk": "low",
+    "fundamental_risk": "medium",
+    "risk_factors": []
+  },
+  "recommendations": {
+    "mock_trading_suggestion": "Consider long position",
+    "position_sizing": "moderate",
+    "stop_loss_suggestion": 124.21,
+    "take_profit_levels": [
+      125.55,
+      127.66,
+      130.0
+    ],
+    "confidence": 0.33
+  }
+}
